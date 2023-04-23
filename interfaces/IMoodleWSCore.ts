@@ -389,7 +389,7 @@ export default interface IMoodleWSCore {
     getCourses: (params: IMoodleWSParams) => Promise<any>;
     /** Get courses matching a specific field (id/s, shortname, idnumber, category) */
     getCoursesByField: (params: {
-      field: "category";
+      field: "category" | "id" | string;
       value: number;
       token?: string;
     }) => Promise<IMoodleWSCoursesResponse>;
