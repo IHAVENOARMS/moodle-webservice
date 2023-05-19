@@ -1,5 +1,5 @@
-import { IMoodleQuestion, IMoodleQuestionUpdate } from "../interfaces";
-import IMoodleParsedQuestion from "../interfaces/IMoodleParsedQuestion";
+import { IMoodleQuestion, IMoodleQuestionUpdate } from '../interfaces';
+import IMoodleParsedQuestion from '../interfaces/IMoodleParsedQuestion';
 export default abstract class MoodleQMultiChoice {
     private static _debug;
     private static _error;
