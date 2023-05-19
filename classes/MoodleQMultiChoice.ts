@@ -1,14 +1,14 @@
-import { IMoodleQuestion, IMoodleQuestionUpdate } from "../interfaces";
-import { parse, HTMLElement } from "node-html-parser";
-import IMoodleParsedQuestion from "../interfaces/IMoodleParsedQuestion";
-import IMoodleQuestionChoice from "../interfaces/IMoodleQuestionChoice";
-import MoodleQuestion from "./MoodleQuestion";
-import { QuestionStates, QuestionTypes } from "../types";
-import debug from "debug";
-import IMoodleQuestionSettings from "../interfaces/IMoodleQuestionSettings";
+import { IMoodleQuestion, IMoodleQuestionUpdate } from '../interfaces';
+import { parse, HTMLElement } from 'node-html-parser';
+import IMoodleParsedQuestion from '../interfaces/IMoodleParsedQuestion';
+import IMoodleQuestionChoice from '../interfaces/IMoodleQuestionChoice';
+import MoodleQuestion from './MoodleQuestion';
+import { QuestionStates, QuestionTypes } from '../types';
+import debug from 'debug';
+import IMoodleQuestionSettings from '../interfaces/IMoodleQuestionSettings';
 
 export default abstract class MoodleQMultiChoice {
-  private static _debug = debug("moodle:helper:question:multichoice");
+  private static _debug = debug('moodle:helper:question:multichoice');
 
   //TODO: Replace with Custom Error class in the future
   private static _error(message: string) {
@@ -41,7 +41,7 @@ export default abstract class MoodleQMultiChoice {
       `Extracting input element from choice HTML element...`
     );
     const inputElement = choiceElement.querySelector('input[type="radio"]');
-    if (!inputElement) throw MoodleQMultiChoice._couldNotFind("input element");
+    if (!inputElement) throw MoodleQMultiChoice._couldNotFind('input element');
     MoodleQMultiChoice._debug(
       `Successfully extracted input element from choice HTML element.`
     );
@@ -55,9 +55,9 @@ export default abstract class MoodleQMultiChoice {
     const label: string = MoodleQMultiChoice._extractChoiceLabel(choiceElement);
 
     const isChosen: boolean =
-      inputElement.getAttribute("checked") === "checked";
+      inputElement.getAttribute('checked') === 'checked';
 
-    const value: number = Number(inputElement.getAttribute("value"));
+    const value: number = Number(inputElement.getAttribute('value'));
 
     //TODO: Find what images look like and extract them as well.
     const choice: IMoodleQuestionChoice = { label, value };
@@ -71,10 +71,10 @@ export default abstract class MoodleQMultiChoice {
   } {
     let chosen: number | undefined;
     const choices: IMoodleQuestionChoice[] = [];
-    const choiceElements = parsedHTML.querySelectorAll(".answer > div");
+    const choiceElements = parsedHTML.querySelectorAll('.answer > div');
 
     if (choiceElements.length === 0)
-      throw MoodleQMultiChoice._couldNotFind("choice elements");
+      throw MoodleQMultiChoice._couldNotFind('choice elements');
 
     for (let i = 0; i < choiceElements.length; i++) {
       const choiceElement = choiceElements[i];
@@ -109,8 +109,8 @@ export default abstract class MoodleQMultiChoice {
   }
 
   private static _extractAnswerLabelFromHTML(parsedHTML: HTMLElement) {
-    const answerBoxText = parsedHTML.querySelector(".rightanswer")?.text;
-    const answer = /(is|are)[ ]?:[ ]?([\s\S]*)/.exec(answerBoxText ?? "")?.[2];
+    const answerBoxText = parsedHTML.querySelector('.rightanswer')?.text;
+    const answer = /(is|are)[ ]?:[ ]?([\s\S]*)/.exec(answerBoxText ?? '')?.[2];
     if (answer)
       MoodleQMultiChoice._debug(
         `Successfully extracted answer label from HTML, label: <${answer}>.`
@@ -127,9 +127,14 @@ export default abstract class MoodleQMultiChoice {
   }
 
   private static _checkCompatibility(question: IMoodleQuestion) {
-    if (question.type !== QuestionTypes.MultiChoice)
+    if (
+      !(
+        question.type === QuestionTypes.MultiChoice ||
+        question.type === QuestionTypes.TrueFalse
+      )
+    )
       throw MoodleQMultiChoice._error(
-        "Trying to parse a question that is not multichoice!"
+        'Trying to parse a question that is not multichoice!'
       );
   }
 
@@ -207,8 +212,8 @@ export default abstract class MoodleQMultiChoice {
     const parsedHTML = parse(question.html);
     // Accessing 'private' members.
     // Since there is really no such thing as 'private' members in javascript
-    const instance: number = MoodleQuestion["_extractInstance"](parsedHTML);
-    const text: string = MoodleQuestion["_extractText"](parsedHTML);
+    const instance: number = MoodleQuestion['_extractInstance'](parsedHTML);
+    const text: string = MoodleQuestion['_extractText'](parsedHTML);
 
     const { choices, chosen } = MoodleQMultiChoice._extractChoices(parsedHTML);
 
