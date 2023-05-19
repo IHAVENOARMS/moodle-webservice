@@ -2,6 +2,6 @@ export default interface IMoodleErrorOptions {
   message: string;
   error?: string;
   exception?: string;
-  errorcode?: number;
+  errorcode?: string;
   debuginfo?: string;
 }

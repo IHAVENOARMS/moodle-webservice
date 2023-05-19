@@ -1,12 +1,13 @@
-import { IMoodleQuestion, IMoodleQuestionUpdate } from "../interfaces";
-import { QuestionTypes } from "../types";
-import { HTMLElement } from "node-html-parser";
-import IMoodleParsedQuestion from "../interfaces/IMoodleParsedQuestion";
-import MoodleQMultiChoice from "./MoodleQMultiChoice";
-import debug from "debug";
+import { IMoodleQuestion, IMoodleQuestionUpdate } from '../interfaces';
+import { QuestionTypes } from '../types';
+import { HTMLElement } from 'node-html-parser';
+import IMoodleParsedQuestion from '../interfaces/IMoodleParsedQuestion';
+import MoodleQMultiChoice from './MoodleQMultiChoice';
+import debug from 'debug';
+import MoodleQShortAnswer from './MoodleQShortAnswer';
 
 export default abstract class MoodleQuestion {
-  private static _debug = debug("moodle:helper:question");
+  private static _debug = debug('moodle:helper:question');
 
   //TODO: Replace with Custom Error class in the future
   private static _error(message: string) {
@@ -15,7 +16,7 @@ export default abstract class MoodleQuestion {
 
   private static _extractText(parsedHTML: HTMLElement) {
     MoodleQuestion._debug(`Extracting question text...`);
-    const textElement = parsedHTML.querySelector(".qtext");
+    const textElement = parsedHTML.querySelector('.qtext');
     if (!textElement)
       throw MoodleQuestion._error(`Could not find question text.`);
     MoodleQuestion._debug(
@@ -29,19 +30,19 @@ export default abstract class MoodleQuestion {
     const couldNotFind = (thing: string) =>
       `Could not find ${thing} in question.`;
 
-    const questionElement = parsedHTML.querySelector("div");
+    const questionElement = parsedHTML.querySelector('div');
     if (!questionElement)
-      throw MoodleQuestion._error(couldNotFind("question element"));
+      throw MoodleQuestion._error(couldNotFind('question element'));
 
-    const htmlId = questionElement.getAttribute("id");
-    if (!htmlId) throw MoodleQuestion._error(couldNotFind("htmlId"));
+    const htmlId = questionElement.getAttribute('id');
+    if (!htmlId) throw MoodleQuestion._error(couldNotFind('htmlId'));
 
     const idRegex = RegExp(`question-([0-9]*)-[0-9]*`);
     const matchObj = idRegex.exec(htmlId);
-    if (!matchObj) throw MoodleQuestion._error(couldNotFind("instance match"));
+    if (!matchObj) throw MoodleQuestion._error(couldNotFind('instance match'));
 
     const instance: string = matchObj[1];
-    if (!instance) throw MoodleQuestion._error(couldNotFind("instance match"));
+    if (!instance) throw MoodleQuestion._error(couldNotFind('instance match'));
 
     MoodleQuestion._debug(
       `Successfully extracted question instance number <${instance}>.`
@@ -67,6 +68,8 @@ export default abstract class MoodleQuestion {
         );
         return MoodleQMultiChoice.parse(question);
       }
+      case QuestionTypes.ShortAnswer:
+        return MoodleQShortAnswer.parse(question);
       default:
         return MoodleQMultiChoice.parse(question);
     }
