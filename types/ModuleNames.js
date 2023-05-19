@@ -1,0 +1,36 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ModulePlurals = void 0;
+var ModuleNames;
+(function (ModuleNames) {
+    ModuleNames["Forum"] = "forum";
+    ModuleNames["Quiz"] = "quiz";
+    ModuleNames["Resource"] = "resource";
+    ModuleNames["Glossary"] = "glossary";
+    ModuleNames["Assign"] = "assign";
+    ModuleNames["BigBlueButton"] = "bigbluebuttonbn";
+    ModuleNames["Book"] = "book";
+    ModuleNames["Chat"] = "chat";
+    ModuleNames["choice"] = "choice";
+    ModuleNames["Data"] = "data";
+    ModuleNames["Feedback"] = "feedback";
+    ModuleNames["Folder"] = "folder";
+    ModuleNames["H5pactivity"] = "h5pactivity";
+    ModuleNames["Imscp"] = "imscp";
+    ModuleNames["Label"] = "label";
+    ModuleNames["Lesson"] = "lesson";
+    ModuleNames["Lti"] = "lti";
+    ModuleNames["Page"] = "page";
+    ModuleNames["Scorm"] = "scorm";
+    ModuleNames["Survey"] = "survery";
+    ModuleNames["Url"] = "url";
+    ModuleNames["Wiki"] = "wiki";
+    ModuleNames["Workshop"] = "workshop";
+})(ModuleNames || (ModuleNames = {}));
+var ModulePlurals;
+(function (ModulePlurals) {
+    ModulePlurals["Forums"] = "Forums";
+    ModulePlurals["Quizzes"] = "Quizzes";
+    ModulePlurals["Files"] = "Files";
+})(ModulePlurals = exports.ModulePlurals || (exports.ModulePlurals = {}));
+exports.default = ModuleNames;
