@@ -49,7 +49,7 @@ class MoodleQuestion {
         return parsedQuestions;
     }
     static parse(question) {
-        MoodleQuestion._debug(`Parsing question #${question.slot}...`);
+        MoodleQuestion._debug(`Parsing question #${question.slot} of type: ${question.type}...`);
         switch (question.type) {
             case types_1.QuestionTypes.MultiChoice: {
                 MoodleQuestion._debug(`Multichoice question detected, passing to multichoice helper...`);

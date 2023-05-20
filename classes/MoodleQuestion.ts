@@ -61,7 +61,9 @@ export default abstract class MoodleQuestion {
   }
 
   public static parse(question: IMoodleQuestion): IMoodleParsedQuestion {
-    MoodleQuestion._debug(`Parsing question #${question.slot}...`);
+    MoodleQuestion._debug(
+      `Parsing question #${question.slot} of type: ${question.type}...`
+    );
     switch (question.type) {
       case QuestionTypes.MultiChoice: {
         MoodleQuestion._debug(
