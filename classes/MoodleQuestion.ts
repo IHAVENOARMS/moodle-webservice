@@ -5,6 +5,7 @@ import IMoodleParsedQuestion from '../interfaces/IMoodleParsedQuestion';
 import MoodleQMultiChoice from './MoodleQMultiChoice';
 import debug from 'debug';
 import MoodleQShortAnswer from './MoodleQShortAnswer';
+import MoodleQTrueFalse from './MoodleQTrueFalse';
 
 export default abstract class MoodleQuestion {
   private static _debug = debug('moodle:helper:question');
@@ -70,6 +71,8 @@ export default abstract class MoodleQuestion {
       }
       case QuestionTypes.ShortAnswer:
         return MoodleQShortAnswer.parse(question);
+      case QuestionTypes.TrueFalse:
+        return MoodleQTrueFalse.parse(question);
       default:
         return MoodleQMultiChoice.parse(question);
     }

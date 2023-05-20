@@ -7,6 +7,7 @@ const types_1 = require("../types");
 const MoodleQMultiChoice_1 = __importDefault(require("./MoodleQMultiChoice"));
 const debug_1 = __importDefault(require("debug"));
 const MoodleQShortAnswer_1 = __importDefault(require("./MoodleQShortAnswer"));
+const MoodleQTrueFalse_1 = __importDefault(require("./MoodleQTrueFalse"));
 class MoodleQuestion {
     //TODO: Replace with Custom Error class in the future
     static _error(message) {
@@ -56,6 +57,8 @@ class MoodleQuestion {
             }
             case types_1.QuestionTypes.ShortAnswer:
                 return MoodleQShortAnswer_1.default.parse(question);
+            case types_1.QuestionTypes.TrueFalse:
+                return MoodleQTrueFalse_1.default.parse(question);
             default:
                 return MoodleQMultiChoice_1.default.parse(question);
         }
