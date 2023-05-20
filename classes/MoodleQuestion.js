@@ -59,8 +59,10 @@ class MoodleQuestion {
                 return MoodleQShortAnswer_1.default.parse(question);
             case types_1.QuestionTypes.TrueFalse:
                 return MoodleQTrueFalse_1.default.parse(question);
-            default:
+            default: {
+                MoodleQuestion._debug(`${question.type} question was encountered, this type is unsupported.`);
                 throw MoodleQuestion._error(`An Unsupported question type ${question.type} was encountered.`);
+            }
         }
     }
     static cheatFrom(destination, source, checkMatch = true) {
