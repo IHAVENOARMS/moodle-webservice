@@ -77,7 +77,7 @@ class MoodleQTrueFalse {
         if (answer)
             MoodleQTrueFalse._debug(`Successfully extracted answer label from HTML, label: <${answer}>.`);
         else
-            MoodleQTrueFalse._error(`Could not find answer label in HTML, possible bug here.`);
+            MoodleQTrueFalse._debug(`Could not find answer label in HTML, possible bug here.`);
         return answer;
     }
     static _parseSettings(settings) {

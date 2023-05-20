@@ -112,7 +112,7 @@ export default abstract class MoodleQTrueFalse {
         `Successfully extracted answer label from HTML, label: <${answer}>.`
       );
     else
-      MoodleQTrueFalse._error(
+      MoodleQTrueFalse._debug(
         `Could not find answer label in HTML, possible bug here.`
       );
     return answer;
