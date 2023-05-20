@@ -73,10 +73,14 @@ export default abstract class MoodleQuestion {
         return MoodleQShortAnswer.parse(question);
       case QuestionTypes.TrueFalse:
         return MoodleQTrueFalse.parse(question);
-      default:
+      default: {
+        MoodleQuestion._debug(
+          `${question.type} question was encountered, this type is unsupported.`
+        );
         throw MoodleQuestion._error(
           `An Unsupported question type ${question.type} was encountered.`
         );
+      }
     }
   }
 
