@@ -104,13 +104,15 @@ export default abstract class MoodleQTrueFalse {
 
   private static _extractAnswerLabelFromHTML(parsedHTML: HTMLElement) {
     const answerBoxText = parsedHTML.querySelector('.rightanswer')?.text;
-    const answer = /(is|are)[ ]?:[ ]?([\s\S]*)/.exec(answerBoxText ?? '')?.[2];
+    const answer = /correct answer is '([\s\S]*)'./.exec(
+      answerBoxText ?? ''
+    )?.[1];
     if (answer)
       MoodleQTrueFalse._debug(
         `Successfully extracted answer label from HTML, label: <${answer}>.`
       );
     else
-      MoodleQTrueFalse._debug(
+      MoodleQTrueFalse._error(
         `Could not find answer label in HTML, possible bug here.`
       );
     return answer;

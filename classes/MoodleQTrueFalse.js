@@ -73,11 +73,11 @@ class MoodleQTrueFalse {
     static _extractAnswerLabelFromHTML(parsedHTML) {
         var _a, _b;
         const answerBoxText = (_a = parsedHTML.querySelector('.rightanswer')) === null || _a === void 0 ? void 0 : _a.text;
-        const answer = (_b = /(is|are)[ ]?:[ ]?([\s\S]*)/.exec(answerBoxText !== null && answerBoxText !== void 0 ? answerBoxText : '')) === null || _b === void 0 ? void 0 : _b[2];
+        const answer = (_b = /correct answer is '([\s\S]*)'./.exec(answerBoxText !== null && answerBoxText !== void 0 ? answerBoxText : '')) === null || _b === void 0 ? void 0 : _b[1];
         if (answer)
             MoodleQTrueFalse._debug(`Successfully extracted answer label from HTML, label: <${answer}>.`);
         else
-            MoodleQTrueFalse._debug(`Could not find answer label in HTML, possible bug here.`);
+            MoodleQTrueFalse._error(`Could not find answer label in HTML, possible bug here.`);
         return answer;
     }
     static _parseSettings(settings) {
