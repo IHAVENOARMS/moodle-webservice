@@ -8,7 +8,7 @@ import debug from 'debug';
 import IMoodleQuestionSettings from '../interfaces/IMoodleQuestionSettings';
 
 export default abstract class MoodleQTrueFalse {
-  private static _debug = debug('moodle:helper:question:multichoice');
+  private static _debug = debug('moodle:helper:question:truefalse');
 
   //TODO: Replace with Custom Error class in the future
   private static _error(message: string) {
@@ -121,9 +121,9 @@ export default abstract class MoodleQTrueFalse {
   }
 
   private static _checkCompatibility(question: IMoodleQuestion) {
-    if (question.type !== QuestionTypes.MultiChoice)
+    if (question.type !== QuestionTypes.TrueFalse)
       throw MoodleQTrueFalse._error(
-        'Trying to parse a question that is not multichoice!'
+        'Trying to parse a question that is not truefalse!'
       );
   }
 
@@ -138,7 +138,7 @@ export default abstract class MoodleQTrueFalse {
   ): IMoodleQuestionUpdate {
     const answer = (question.answer as IMoodleQuestionChoice)?.value;
     MoodleQTrueFalse._debug(
-      `Successfully converted multichoice question <${question.instance}> to update object.`
+      `Successfully converted truefalse question <${question.instance}> to update object.`
     );
     return {
       instance: question.instance,
@@ -178,7 +178,7 @@ export default abstract class MoodleQTrueFalse {
   ): boolean {
     //TODO: find a stricter criteria for finding matching questions.
     MoodleQTrueFalse._debug(
-      `Matching multichoice questions <${questionA.instance}:${questionA.slot}> and <${questionB.instance}:${questionB.slot}>...`
+      `Matching truefalse questions <${questionA.instance}:${questionA.slot}> and <${questionB.instance}:${questionB.slot}>...`
     );
     const match = questionA.text === questionB.text;
     MoodleQTrueFalse._debug(
@@ -190,9 +190,7 @@ export default abstract class MoodleQTrueFalse {
   }
 
   public static parse(question: IMoodleQuestion): IMoodleParsedQuestion {
-    MoodleQTrueFalse._debug(
-      `Parsing multichoice question #${question.slot}...`
-    );
+    MoodleQTrueFalse._debug(`Parsing truefalse question #${question.slot}...`);
 
     MoodleQTrueFalse._checkCompatibility(question);
 
@@ -241,7 +239,7 @@ export default abstract class MoodleQTrueFalse {
       MoodleQTrueFalse._debug(`Question is not graded, cannot extract answer.`);
 
     MoodleQTrueFalse._debug(
-      `Successfully parsed multichoice question #${question.slot}...`
+      `Successfully parsed truefalse question #${question.slot}...`
     );
 
     return {

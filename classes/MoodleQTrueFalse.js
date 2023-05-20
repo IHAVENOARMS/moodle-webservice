@@ -84,8 +84,8 @@ class MoodleQTrueFalse {
         return JSON.parse(settings);
     }
     static _checkCompatibility(question) {
-        if (question.type !== types_1.QuestionTypes.MultiChoice)
-            throw MoodleQTrueFalse._error('Trying to parse a question that is not multichoice!');
+        if (question.type !== types_1.QuestionTypes.TrueFalse)
+            throw MoodleQTrueFalse._error('Trying to parse a question that is not truefalse!');
     }
     static _removeHTML(question) {
         const noHTMLQuestion = Object.assign({}, question);
@@ -95,7 +95,7 @@ class MoodleQTrueFalse {
     static toUpdate(question) {
         var _a;
         const answer = (_a = question.answer) === null || _a === void 0 ? void 0 : _a.value;
-        MoodleQTrueFalse._debug(`Successfully converted multichoice question <${question.instance}> to update object.`);
+        MoodleQTrueFalse._debug(`Successfully converted truefalse question <${question.instance}> to update object.`);
         return {
             instance: question.instance,
             slot: question.slot,
@@ -121,7 +121,7 @@ class MoodleQTrueFalse {
     }
     static match(questionA, questionB) {
         //TODO: find a stricter criteria for finding matching questions.
-        MoodleQTrueFalse._debug(`Matching multichoice questions <${questionA.instance}:${questionA.slot}> and <${questionB.instance}:${questionB.slot}>...`);
+        MoodleQTrueFalse._debug(`Matching truefalse questions <${questionA.instance}:${questionA.slot}> and <${questionB.instance}:${questionB.slot}>...`);
         const match = questionA.text === questionB.text;
         MoodleQTrueFalse._debug(match
             ? `Questions <${questionA.instance}:${questionA.slot}> and <${questionB.instance}:${questionB.slot}> match!`
@@ -130,7 +130,7 @@ class MoodleQTrueFalse {
     }
     static parse(question) {
         var _a;
-        MoodleQTrueFalse._debug(`Parsing multichoice question #${question.slot}...`);
+        MoodleQTrueFalse._debug(`Parsing truefalse question #${question.slot}...`);
         MoodleQTrueFalse._checkCompatibility(question);
         const settings = MoodleQTrueFalse._parseSettings(question.settings);
         const parsedHTML = (0, node_html_parser_1.parse)(question.html);
@@ -161,7 +161,7 @@ class MoodleQTrueFalse {
         }
         else
             MoodleQTrueFalse._debug(`Question is not graded, cannot extract answer.`);
-        MoodleQTrueFalse._debug(`Successfully parsed multichoice question #${question.slot}...`);
+        MoodleQTrueFalse._debug(`Successfully parsed truefalse question #${question.slot}...`);
         return Object.assign(Object.assign({}, MoodleQTrueFalse._removeHTML(question)), { mark: question.mark ? Number(question.mark) : undefined, settings,
             instance,
             text,
@@ -171,4 +171,4 @@ class MoodleQTrueFalse {
     }
 }
 exports.default = MoodleQTrueFalse;
-MoodleQTrueFalse._debug = (0, debug_1.default)('moodle:helper:question:multichoice');
+MoodleQTrueFalse._debug = (0, debug_1.default)('moodle:helper:question:truefalse');
