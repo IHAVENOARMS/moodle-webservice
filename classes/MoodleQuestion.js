@@ -60,7 +60,7 @@ class MoodleQuestion {
             case types_1.QuestionTypes.TrueFalse:
                 return MoodleQTrueFalse_1.default.parse(question);
             default:
-                return MoodleQMultiChoice_1.default.parse(question);
+                throw MoodleQuestion._error(`An Unsupported question type ${question.type} was encountered.`);
         }
     }
     static cheatFrom(destination, source, checkMatch = true) {
