@@ -1,6 +1,6 @@
 {
   "name": "moodle-webservice",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "description": "Moodle Web Service API client with intellisense and typechecking",
   "main": "index.js",
   "scripts": {},
