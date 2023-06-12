@@ -168,7 +168,7 @@ export class MoodleClient {
         Accept: "application/json",
       },
     });
-    const result = JSON.parse(res.data);
+    const result = res.data;
     if (typeof result.error === "string") {
       throw new MoodleError(result);
     }
@@ -253,10 +253,10 @@ export class MoodleClient {
           },
         });
 
-        fnDebugger!(`Succesfully received ${res.data} as response...`);
+        fnDebugger!(`Succesfully received ${res.data.toString()} as response...`);
 
         //Expected JSON as data object
-        let result = JSON.parse(res.data);
+        let result = res.data;
 
         //Moodle always returns HTTP status code 200
         //Error can be detected by object properties
