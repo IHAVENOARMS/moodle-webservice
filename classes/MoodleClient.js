@@ -16,7 +16,7 @@ exports.MoodleClient = void 0;
 const os_1 = __importDefault(require("os"));
 const fs_1 = __importDefault(require("fs"));
 const url_1 = require("url");
-const node_fetch_1 = __importDefault(require("node-fetch"));
+const axios_1 = __importDefault(require("axios"));
 const debug_1 = __importDefault(require("debug"));
 //Load package info
 const package_json_1 = __importDefault(require("../package.json"));
@@ -102,8 +102,7 @@ class MoodleClient {
                     for (var i = 0; i < item.length; i++) {
                         dig(item[i], prefix.length === 0
                             ? prefix + key + "[" + i + "]" //Root level has no square brackets
-                            : prefix + "[" + key + "][" + i + "]" //Deeper levels must include brackets
-                        );
+                            : prefix + "[" + key + "][" + i + "]");
                     }
                 }
                 else if (typeof item === "object") {
@@ -122,20 +121,16 @@ class MoodleClient {
     static authenticate({ baseUrl, credentials, userAgent, }) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            let options;
-            // if (!payload.body) {
-            //No data to be sent
-            options = {
-                method: "GET",
+            let form = new url_1.URLSearchParams(Object.assign(Object.assign({}, credentials), { service: (_a = credentials === null || credentials === void 0 ? void 0 : credentials.service) !== null && _a !== void 0 ? _a : "moodle_mobile_app" }));
+            const res = yield (0, axios_1.default)({
+                url: baseUrl + "login/token.php?" + form,
+                method: "get",
                 headers: {
                     "User-Agent": userAgent !== null && userAgent !== void 0 ? userAgent : MoodleClient._buildUserAgent(),
                     Accept: "application/json",
                 },
-            };
-            let form = new url_1.URLSearchParams(Object.assign(Object.assign({}, credentials), { service: (_a = credentials === null || credentials === void 0 ? void 0 : credentials.service) !== null && _a !== void 0 ? _a : "moodle_mobile_app" }));
-            let url = baseUrl + "login/token.php?" + form;
-            const res = yield (0, node_fetch_1.default)(url, options);
-            const result = yield res.json();
+            });
+            const result = JSON.parse(res.data);
             if (typeof result.error === "string") {
                 throw new MoodleError_1.default(result);
             }
@@ -168,8 +163,9 @@ class MoodleClient {
                 finalParams = Object.assign(Object.assign({}, finalParams), MoodleClient.flatten({ [key]: item }));
             }
         }
-        if (finalParams.data)
+        if (finalParams.data) {
             finalParams = Object.assign(Object.assign({}, finalParams), MoodleClient.flatten(MoodleClient._format(params.data)));
+        }
         return new url_1.URLSearchParams(finalParams);
     }
     _request(item, params) {
@@ -186,16 +182,6 @@ class MoodleClient {
                 if (!wsfunction || wsfunction.length === 0) {
                     throw new Error("Web Service function not defined: " + item);
                 }
-                //Build request options
-                let options = null;
-                //No data to be sent
-                options = {
-                    method: "GET",
-                    headers: {
-                        "User-Agent": this.userAgent,
-                        Accept: "application/json",
-                    },
-                };
                 let form = "";
                 if (params)
                     form = MoodleClient._prepareParams(params);
@@ -208,10 +194,17 @@ class MoodleClient {
                     "&" +
                     form;
                 //Make a HTTP request
-                let res = yield (0, node_fetch_1.default)(url, options);
-                fnDebugger(`Succesfully received ${yield res.text()} as response...`);
+                let res = yield (0, axios_1.default)({
+                    url: url,
+                    method: "get",
+                    headers: {
+                        "User-Agent": this.userAgent,
+                        Accept: "application/json",
+                    },
+                });
+                fnDebugger(`Succesfully received ${res.data} as response...`);
                 //Expected JSON as data object
-                let result = yield res.json();
+                let result = JSON.parse(res.data);
                 //Moodle always returns HTTP status code 200
                 //Error can be detected by object properties
                 if (typeof result.exception === "string") {

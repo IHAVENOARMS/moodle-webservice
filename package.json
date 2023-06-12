@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {},
   "dependencies": {
+    "@types/axios": "^0.14.0",
+    "axios": "^1.4.0",
     "node-fetch": "^2.6.1",
     "node-html-parser": "^6.1.5"
   },
