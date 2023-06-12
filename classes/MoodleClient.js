@@ -209,7 +209,6 @@ class MoodleClient {
                     form;
                 //Make a HTTP request
                 let res = yield (0, node_fetch_1.default)(url, options);
-                fnDebugger(`Succesfully received ${yield res.text()} as response...`);
                 //Expected JSON as data object
                 let result = yield res.json();
                 //Moodle always returns HTTP status code 200
