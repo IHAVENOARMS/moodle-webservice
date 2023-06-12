@@ -127,12 +127,7 @@ export default abstract class MoodleQMultiChoice {
   }
 
   private static _checkCompatibility(question: IMoodleQuestion) {
-    if (
-      !(
-        question.type === QuestionTypes.MultiChoice ||
-        question.type === QuestionTypes.TrueFalse
-      )
-    )
+    if (question.type !== QuestionTypes.MultiChoice)
       throw MoodleQMultiChoice._error(
         'Trying to parse a question that is not multichoice!'
       );

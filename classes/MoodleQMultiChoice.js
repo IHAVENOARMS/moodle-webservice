@@ -87,8 +87,7 @@ class MoodleQMultiChoice {
         return JSON.parse(settings);
     }
     static _checkCompatibility(question) {
-        if (!(question.type === types_1.QuestionTypes.MultiChoice ||
-            question.type === types_1.QuestionTypes.TrueFalse))
+        if (question.type !== types_1.QuestionTypes.MultiChoice)
             throw MoodleQMultiChoice._error('Trying to parse a question that is not multichoice!');
     }
     static _removeHTML(question) {

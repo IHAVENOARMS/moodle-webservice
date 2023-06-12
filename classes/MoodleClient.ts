@@ -261,6 +261,7 @@ export class MoodleClient {
 
         //Make a HTTP request
         let res = await fetch(url, options);
+        fnDebugger!(`Succesfully received ${await res.text()} as response...`);
 
         //Expected JSON as data object
         let result = await res.json();
