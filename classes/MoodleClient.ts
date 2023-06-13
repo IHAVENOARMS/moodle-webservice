@@ -169,6 +169,8 @@ export class MoodleClient {
       },
       agent: httpsAgent,
       json: true,
+      rejectUnauthorized: false,
+      strictSSL: false
     };
 
     let form: URLSearchParams | "" = new URLSearchParams({
@@ -252,7 +254,9 @@ export class MoodleClient {
             "Accept-Encoding": "gzip, deflate, br",
           },
           agent: this.options.httpsAgent,
-          json: true
+          json: true,
+          rejectUnauthorized: false,
+          strictSSL: false,
         };
 
         let form: URLSearchParams | "" = "";

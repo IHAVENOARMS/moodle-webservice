@@ -133,6 +133,8 @@ class MoodleClient {
                 },
                 agent: httpsAgent,
                 json: true,
+                rejectUnauthorized: false,
+                strictSSL: false
             };
             let form = new url_1.URLSearchParams(Object.assign(Object.assign({}, credentials), { service: (_a = credentials === null || credentials === void 0 ? void 0 : credentials.service) !== null && _a !== void 0 ? _a : "moodle_mobile_app" }));
             let url = baseUrl + "login/token.php?" + form;
@@ -199,7 +201,9 @@ class MoodleClient {
                         "Accept-Encoding": "gzip, deflate, br",
                     },
                     agent: this.options.httpsAgent,
-                    json: true
+                    json: true,
+                    rejectUnauthorized: false,
+                    strictSSL: false,
                 };
                 let form = "";
                 if (params)
