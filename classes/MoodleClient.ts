@@ -163,6 +163,7 @@ export class MoodleClient {
       headers: {
         "User-Agent": userAgent ?? MoodleClient._buildUserAgent(),
         Accept: "application/json",
+        "Accept-Encoding": "gzip, deflate, br"
       },
       agent: new https.Agent({ rejectUnauthorized: false }),
     };
@@ -246,6 +247,7 @@ export class MoodleClient {
           headers: {
             "User-Agent": this.userAgent,
             Accept: "application/json",
+            "Accept-Encoding": "gzip, deflate, br"
           },
           agent: new https.Agent({ rejectUnauthorized: false }),
         };
