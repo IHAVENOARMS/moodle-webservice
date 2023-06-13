@@ -16,7 +16,7 @@ exports.MoodleClient = void 0;
 const os_1 = __importDefault(require("os"));
 const fs_1 = __importDefault(require("fs"));
 const url_1 = require("url");
-const node_fetch_1 = __importDefault(require("node-fetch"));
+const superagent_1 = __importDefault(require("superagent"));
 const debug_1 = __importDefault(require("debug"));
 //Load package info
 const package_json_1 = __importDefault(require("../package.json"));
@@ -118,25 +118,26 @@ class MoodleClient {
         dig(data, "");
         return result;
     }
-    static authenticate({ baseUrl, credentials, userAgent, httpsAgent }) {
+    static authenticate({ baseUrl, credentials, userAgent, httpsAgent, }) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
             let options;
             // if (!payload.body) {
             //No data to be sent
-            options = {
-                method: "GET",
-                headers: {
-                    "User-Agent": userAgent !== null && userAgent !== void 0 ? userAgent : MoodleClient._buildUserAgent(),
-                    Accept: "application/json",
-                    "Accept-Encoding": "gzip, deflate, br"
-                },
-                agent: httpsAgent,
-            };
+            // options = {
+            //   method: "GET",
+            //   headers: {
+            //     "User-Agent": userAgent ?? MoodleClient._buildUserAgent(),
+            //     Accept: "application/json",
+            //     "Accept-Encoding": "gzip, deflate, br",
+            //   },
+            //   agent: httpsAgent,
+            // };
             let form = new url_1.URLSearchParams(Object.assign(Object.assign({}, credentials), { service: (_a = credentials === null || credentials === void 0 ? void 0 : credentials.service) !== null && _a !== void 0 ? _a : "moodle_mobile_app" }));
             let url = baseUrl + "login/token.php?" + form;
-            const res = yield (0, node_fetch_1.default)(url, options);
-            const result = yield res.json();
+            const res = yield superagent_1.default.get(url).set("User-Agent", userAgent !== null && userAgent !== void 0 ? userAgent : "")
+                .set("Accept", "application/json").set("Accept-Encoding", "gzip, deflate, br").agent(httpsAgent);
+            const result = res.body;
             if (typeof result.error === "string") {
                 throw new MoodleError_1.default(result);
             }
@@ -196,7 +197,7 @@ class MoodleClient {
                     headers: {
                         "User-Agent": this.userAgent,
                         Accept: "application/json",
-                        "Accept-Encoding": "gzip, deflate, br"
+                        "Accept-Encoding": "gzip, deflate, br",
                     },
                     agent: this.options.httpsAgent,
                 };
@@ -212,9 +213,10 @@ class MoodleClient {
                     "&" +
                     form;
                 //Make a HTTP request
-                let res = yield (0, node_fetch_1.default)(url, options);
+                let res = yield superagent_1.default.get(url).set("User-Agent", this.userAgent)
+                    .set("Accept", "application/json").set("Accept-Encoding", "gzip, deflate, br").agent(this.options.httpsAgent);
                 //Expected JSON as data object
-                let result = yield res.json();
+                let result = res.body;
                 //Moodle always returns HTTP status code 200
                 //Error can be detected by object properties
                 if (typeof result.exception === "string") {

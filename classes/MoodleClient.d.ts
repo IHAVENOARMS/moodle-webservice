@@ -16,7 +16,7 @@ export declare class MoodleClient {
     private static _buildUserAgent;
     get userAgent(): string;
     static flatten(data: any): AnyObject;
-    static authenticate({ baseUrl, credentials, userAgent, httpsAgent }: Omit<IMoodleClientOptions, "token">): Promise<IMoodleWSAuthResponse>;
+    static authenticate({ baseUrl, credentials, userAgent, httpsAgent, }: Omit<IMoodleClientOptions, "token">): Promise<IMoodleWSAuthResponse>;
     private static _format;
     private static _prepareParams;
     private _request;

@@ -1,7 +1,7 @@
 import os from "os";
 import fs from "fs";
 import { URLSearchParams } from "url";
-import https from "https";
+import superagent from "superagent";
 import fetch, { RequestInit } from "node-fetch";
 import debug from "debug";
 
@@ -154,20 +154,20 @@ export class MoodleClient {
     baseUrl,
     credentials,
     userAgent,
-    httpsAgent
+    httpsAgent,
   }: Omit<IMoodleClientOptions, "token">) {
     let options: RequestInit;
     // if (!payload.body) {
     //No data to be sent
-    options = {
-      method: "GET",
-      headers: {
-        "User-Agent": userAgent ?? MoodleClient._buildUserAgent(),
-        Accept: "application/json",
-        "Accept-Encoding": "gzip, deflate, br"
-      },
-      agent: httpsAgent,
-    };
+    // options = {
+    //   method: "GET",
+    //   headers: {
+    //     "User-Agent": userAgent ?? MoodleClient._buildUserAgent(),
+    //     Accept: "application/json",
+    //     "Accept-Encoding": "gzip, deflate, br",
+    //   },
+    //   agent: httpsAgent,
+    // };
 
     let form: URLSearchParams | "" = new URLSearchParams({
       ...credentials,
@@ -175,8 +175,12 @@ export class MoodleClient {
     } as any);
 
     let url = baseUrl + "login/token.php?" + form;
-    const res = await fetch(url, options);
-    const result = await res.json();
+    const res = await superagent.get(url).set("User-Agent", userAgent ?? "")
+      .set("Accept", "application/json").set(
+        "Accept-Encoding",
+        "gzip, deflate, br",
+      ).agent(httpsAgent);
+    const result = res.body;
     if (typeof result.error === "string") {
       throw new MoodleError(result);
     }
@@ -248,7 +252,7 @@ export class MoodleClient {
           headers: {
             "User-Agent": this.userAgent,
             Accept: "application/json",
-            "Accept-Encoding": "gzip, deflate, br"
+            "Accept-Encoding": "gzip, deflate, br",
           },
           agent: this.options.httpsAgent,
         };
@@ -266,10 +270,14 @@ export class MoodleClient {
           form;
 
         //Make a HTTP request
-        let res = await fetch(url, options);
+        let res = await superagent.get(url).set("User-Agent", this.userAgent)
+          .set("Accept", "application/json").set(
+            "Accept-Encoding",
+            "gzip, deflate, br",
+          ).agent(this.options.httpsAgent);
 
         //Expected JSON as data object
-        let result = await res.json();
+        let result = res.body;
 
         //Moodle always returns HTTP status code 200
         //Error can be detected by object properties
