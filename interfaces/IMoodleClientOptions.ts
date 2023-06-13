@@ -1,3 +1,4 @@
+import https from 'https';
 import IMoodleWSCredentials from './IMoodleWSCredentials';
 
 export default interface IMoodleClientOptions {
@@ -5,4 +6,5 @@ export default interface IMoodleClientOptions {
   userAgent?: string;
   token?: string;
   credentials?: IMoodleWSCredentials;
+  httpsAgent?: https.Agent;
 }

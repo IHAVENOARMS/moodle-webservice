@@ -154,6 +154,7 @@ export class MoodleClient {
     baseUrl,
     credentials,
     userAgent,
+    httpsAgent
   }: Omit<IMoodleClientOptions, "token">) {
     let options: RequestInit;
     // if (!payload.body) {
@@ -165,7 +166,7 @@ export class MoodleClient {
         Accept: "application/json",
         "Accept-Encoding": "gzip, deflate, br"
       },
-      agent: new https.Agent({ rejectUnauthorized: false }),
+      agent: httpsAgent,
     };
 
     let form: URLSearchParams | "" = new URLSearchParams({
@@ -249,7 +250,7 @@ export class MoodleClient {
             Accept: "application/json",
             "Accept-Encoding": "gzip, deflate, br"
           },
-          agent: new https.Agent({ rejectUnauthorized: false }),
+          agent: this.options.httpsAgent,
         };
 
         let form: URLSearchParams | "" = "";
