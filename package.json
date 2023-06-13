@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {},
   "dependencies": {
-    "@types/superagent": "^4.1.18",
+    "@types/request": "^2.48.8",
     "node-fetch": "^2.6.1",
     "node-html-parser": "^6.1.5",
-    "superagent": "^8.0.9"
+    "request": "^2.88.2"
   },
   "repository": {
     "type": "git",
