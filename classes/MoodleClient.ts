@@ -1,14 +1,15 @@
 import os from "os";
 import fs from "fs";
 import { URLSearchParams } from "url";
+import https from "https";
 import fetch, { RequestInit } from "node-fetch";
 import debug from "debug";
 
 import {
   IMoodleClientOptions,
+  IMoodleWSAPI,
   IMoodleWSDefinition,
   IMoodleWSFn,
-  IMoodleWSAPI,
   IMoodleWSParams,
 } from "../interfaces";
 
@@ -27,7 +28,7 @@ interface IExtMoodleWSAPI extends IMoodleWSAPI {
 //Load function definitions
 const json = fs.readFileSync(
   path.resolve(__dirname, "../api", "functions.json"),
-  "utf8"
+  "utf8",
 );
 const definition: IMoodleWSDefinition = JSON.parse(json);
 
@@ -48,7 +49,7 @@ export class MoodleClient {
     //Check the URL syntax
     if (options.baseUrl.includes("server.php")) {
       throw new Error(
-        "Argument 'options.baseUrl' should NOT contain the complete URL. Hint: provide base URL such as https://mooodle.example.com"
+        "Argument 'options.baseUrl' should NOT contain the complete URL. Hint: provide base URL such as https://mooodle.example.com",
       );
     }
     this._loadApi();
@@ -80,10 +81,10 @@ export class MoodleClient {
       //Create a new function
       if (!api[item.module][item.facility][item.preferName]) {
         this._functions.push(
-          item.module + "." + item.facility + "." + item.preferName
+          item.module + "." + item.facility + "." + item.preferName,
         );
         api[item.module][item.facility][item.preferName] = function (
-          params: IMoodleWSParams
+          params: IMoodleWSParams,
         ) {
           return client._request(item, params);
         };
@@ -132,7 +133,7 @@ export class MoodleClient {
               item[i],
               prefix.length === 0
                 ? prefix + key + "[" + i + "]" //Root level has no square brackets
-                : prefix + "[" + key + "][" + i + "]" //Deeper levels must include brackets
+                : prefix + "[" + key + "][" + i + "]", //Deeper levels must include brackets
             );
           }
         } else if (typeof item === "object") {
@@ -163,6 +164,7 @@ export class MoodleClient {
         "User-Agent": userAgent ?? MoodleClient._buildUserAgent(),
         Accept: "application/json",
       },
+      agent: new https.Agent({ rejectUnauthorized: false }),
     };
 
     let form: URLSearchParams | "" = new URLSearchParams({
@@ -208,17 +210,18 @@ export class MoodleClient {
         };
       }
     }
-    if (finalParams.data)
+    if (finalParams.data) {
       finalParams = {
         ...finalParams,
         ...MoodleClient.flatten(MoodleClient._format(params.data)),
       };
+    }
     return new URLSearchParams(finalParams as any);
   }
 
   private _request(
     item: IMoodleWSFn,
-    params?: IMoodleWSParams
+    params?: IMoodleWSParams,
   ): Promise<AnyObject | Error> {
     return new Promise(async (resolve, reject) => {
       let fnDebugger: debug.Debugger;
@@ -244,14 +247,14 @@ export class MoodleClient {
             "User-Agent": this.userAgent,
             Accept: "application/json",
           },
+          agent: new https.Agent({ rejectUnauthorized: false }),
         };
 
         let form: URLSearchParams | "" = "";
         if (params) form = MoodleClient._prepareParams(params);
 
         //Complete the URL
-        let url =
-          this.options.baseUrl +
+        let url = this.options.baseUrl +
           "/webservice/rest/server.php?wstoken=" +
           (params?.token ?? this.api.config.token ?? "") +
           "&moodlewsrestformat=json&wsfunction=" +
@@ -275,14 +278,16 @@ export class MoodleClient {
         fnDebugger!(
           `Successfully called ${item.preferName} with parameters: ${
             JSON.stringify(params) ?? "null"
-          }.`
+          }.`,
         );
         resolve(result as AnyObject);
       } catch (err) {
         fnDebugger!(
-          `Failed to call ${item.preferName} with parameters: ${JSON.stringify(
-            params
-          )}.`
+          `Failed to call ${item.preferName} with parameters: ${
+            JSON.stringify(
+              params,
+            )
+          }.`,
         );
         reject(err as Error);
       }
