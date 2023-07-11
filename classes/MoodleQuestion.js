@@ -100,5 +100,5 @@ class MoodleQuestion {
         }
     }
 }
-exports.default = MoodleQuestion;
 MoodleQuestion._debug = (0, debug_1.default)('moodle:helper:question');
+exports.default = MoodleQuestion;

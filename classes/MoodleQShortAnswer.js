@@ -73,5 +73,5 @@ class MoodleQShortAnswer {
             answer });
     }
 }
-exports.default = MoodleQShortAnswer;
 MoodleQShortAnswer._debug = (0, debug_1.default)('moodle:helper:question:shortanswer');
+exports.default = MoodleQShortAnswer;

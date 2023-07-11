@@ -14,17 +14,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MoodleClient = void 0;
 const os_1 = __importDefault(require("os"));
-const fs_1 = __importDefault(require("fs"));
 const url_1 = require("url");
 const httpService_1 = require("../services/httpService");
 const debug_1 = __importDefault(require("debug"));
 //Load package info
 const package_json_1 = __importDefault(require("../package.json"));
-const path_1 = __importDefault(require("path"));
 const MoodleError_1 = __importDefault(require("./MoodleError"));
 //Load function definitions
-const json = fs_1.default.readFileSync(path_1.default.resolve(__dirname, "../api", "functions.json"), "utf8");
-const definition = JSON.parse(json);
+const functions_json_1 = __importDefault(require("../api/functions.json"));
+const definition = functions_json_1.default;
 class MoodleClient {
     constructor(options) {
         this.options = options;

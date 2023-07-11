@@ -32,5 +32,5 @@ var ModulePlurals;
     ModulePlurals["Forums"] = "Forums";
     ModulePlurals["Quizzes"] = "Quizzes";
     ModulePlurals["Files"] = "Files";
-})(ModulePlurals = exports.ModulePlurals || (exports.ModulePlurals = {}));
+})(ModulePlurals || (exports.ModulePlurals = ModulePlurals = {}));
 exports.default = ModuleNames;

@@ -170,5 +170,5 @@ class MoodleQTrueFalse {
             answer });
     }
 }
-exports.default = MoodleQTrueFalse;
 MoodleQTrueFalse._debug = (0, debug_1.default)('moodle:helper:question:truefalse');
+exports.default = MoodleQTrueFalse;

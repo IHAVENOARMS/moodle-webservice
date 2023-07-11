@@ -174,5 +174,5 @@ class MoodleQMultiChoice {
             answer });
     }
 }
-exports.default = MoodleQMultiChoice;
 MoodleQMultiChoice._debug = (0, debug_1.default)('moodle:helper:question:multichoice');
+exports.default = MoodleQMultiChoice;

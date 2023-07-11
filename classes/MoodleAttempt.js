@@ -63,5 +63,5 @@ class MoodleAttempt {
         return Object.assign(Object.assign({}, destination), { questions: newQuestions });
     }
 }
-exports.default = MoodleAttempt;
 MoodleAttempt._debug = (0, debug_1.default)("moodle:helper:attempt");
+exports.default = MoodleAttempt;
